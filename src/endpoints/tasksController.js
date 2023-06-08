@@ -16,94 +16,83 @@ const tasks = [
   {
     id: 1,
     name: 'Lebensmittel einkaufen',
-    date_created: '2023-06-08',
-    done: false,
-    tags: ['Einkauf', 'Lebensmittel'],
+    created_at: '2023-06-08T00:00:00.000Z',
+    completed_at: null,
     email: 'max.mustermann@gmail.com',
   },
   {
     id: 2,
     name: 'Bericht abschließen',
-    date_created: '2023-06-07',
-    done: true,
-    tags: ['Arbeit', 'Berichte'],
+    created_at: '2023-06-07T00:00:00.000Z',
+    completed_at: '2023-06-07T10:30:00.000Z',
     email: 'john.doe@gmail.com',
   },
   {
     id: 3,
     name: 'Laufen gehen',
-    date_created: '2023-06-08',
-    done: false,
-    tags: ['Fitness', 'Gesundheit', 'Outdoor'],
+    created_at: '2023-06-08T00:00:00.000Z',
+    completed_at: null,
     email: 'jane.smith@gmail.com',
   },
   {
     id: 4,
     name: 'Ein Buch lesen',
-    date_created: '2023-06-06',
-    done: true,
-    tags: ['Lesen'],
+    created_at: '2023-06-06T00:00:00.000Z',
+    completed_at: '2023-06-06T15:45:00.000Z',
     email: 'max.mustermann@gmail.com',
   },
   {
     id: 5,
     name: 'Rechnungen bezahlen',
-    date_created: '2023-06-09',
-    done: false,
-    tags: ['Finanzen', 'Rechnungen'],
+    created_at: '2023-06-09T00:00:00.000Z',
+    completed_at: null,
     email: 'john.doe@gmail.com',
   },
   {
     id: 6,
     name: 'Mama anrufen',
-    date_created: '2023-06-10',
-    done: false,
-    tags: ['Familie'],
+    created_at: '2023-06-10T00:00:00.000Z',
+    completed_at: null,
     email: 'jane.smith@gmail.com',
   },
   {
     id: 7,
     name: 'Meeting vorbereiten',
-    date_created: '2023-06-11',
-    done: false,
-    tags: ['Arbeit', 'Meeting'],
+    created_at: '2023-06-11T00:00:00.000Z',
+    completed_at: null,
     email: 'max.mustermann@gmail.com',
   },
   {
     id: 8,
     name: 'Geburtstagsgeschenk kaufen',
-    date_created: '2023-06-12',
-    done: false,
-    tags: ['Geschenk', 'Geburtstag'],
+    created_at: '2023-06-12T00:00:00.000Z',
+    completed_at: null,
     email: 'john.doe@gmail.com',
   },
   {
     id: 9,
     name: 'Wohnung aufräumen',
-    date_created: '2023-06-12',
-    done: false,
-    tags: ['Haushalt'],
+    created_at: '2023-06-12T00:00:00.000Z',
+    completed_at: null,
     email: 'jane.smith@gmail.com',
   },
   {
     id: 10,
     name: 'Blogpost schreiben',
-    date_created: '2023-06-13',
-    done: false,
-    tags: ['Schreiben', 'Blog'],
+    created_at: '2023-06-13T00:00:00.000Z',
+    completed_at: null,
     email: 'max.mustermann@gmail.com',
   },
 ];
 
-function isValidTask(body) {
+function isValidTask(task) {
   const {
-    name, date_created, done, tags,
-  } = body;
+    name, created_at, completed_at,
+  } = task;
   return (
-    (typeof name !== 'string')
-    || (typeof date_created !== 'string')
-    || (typeof done !== 'boolean')
-    || (typeof tags !== 'object')
+    typeof name === 'string'
+    || typeof created_at === 'string'
+    || (completed_at == null || typeof completed_at === 'string')
   );
 }
 
@@ -134,19 +123,14 @@ router.get('/:id', async (req, res) => {
 router.post('/', (req, res) => {
   const sessionEmail = req.session?.email;
 
-  const {
-    name, date_created, done, tags,
-  } = req.body;
-  if (isValidTask(req.body)) {
-    return res.status(422).json({ error: 'Missing or wrong body parameters' });
-  }
+  const { name } = req.body;
+  if (!isValidTask(req.body)) return res.status(422).json({ error: 'Missing or wrong body parameters' });
   const lastTaskId = parseInt(tasks[tasks.length - 1].id, 10);
   const newTask = {
     id: lastTaskId ? lastTaskId + 1 : 1,
     name,
-    date_created,
-    done,
-    tags,
+    created_at: new Date(),
+    completed_at: null,
     email: sessionEmail,
   };
   tasks.push(newTask);
@@ -158,7 +142,7 @@ router.put('/:id', (req, res) => {
   const sessionEmail = req.session?.email;
 
   const {
-    name, date_created, done, tags,
+    name, created_at, completed_at,
   } = req.body;
   const taskId = parseInt(req.params.id, 10);
   const taskIndex = tasks.findIndex((t) => t.id === taskId);
@@ -170,9 +154,8 @@ router.put('/:id', (req, res) => {
   const newTask = {
     id: foundTask.id,
     name,
-    date_created,
-    done,
-    tags,
+    created_at,
+    completed_at,
     email: foundTask.email,
   };
   tasks[taskIndex] = newTask;
