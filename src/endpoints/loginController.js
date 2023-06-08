@@ -13,26 +13,22 @@ router.use(session({
 }));
 
 const fixPassword = 'm295';
-const logins = [
-  {
-    email: 'john.doe@gmail.com', password: fixPassword,
-  },
-  {
-    email: 'max.mustermann@gmail.com', password: fixPassword,
-  },
-  {
-    email: 'jane.smith@gmail.com', password: fixPassword,
-  },
-];
+
+function isEmail(email) {
+  // Regex so todo users cant add random characters as an email
+  const emailFormat = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  if (email !== '' && email.match(emailFormat)) { return true; }
+
+  return false;
+}
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const entry = logins.find((x) => email?.toLowerCase() === x.email && password === x.password);
 
   // Check the credentials against store
-  if (entry) {
+  if (password === fixPassword && isEmail(email)) {
     // Link email to session
-    req.session.email = entry.email;
+    req.session.email = email;
 
     return res.status(200).json({ email });
   }
