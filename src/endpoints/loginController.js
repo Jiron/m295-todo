@@ -18,6 +18,9 @@ const logins = [
   {
     email: 'max.mustermann@gmail.com', password: fixPassword,
   },
+  {
+    email: 'jane.smith@gmail.com', password: fixPassword,
+  },
 ];
 
 router.post('/login', async (req, res) => {
