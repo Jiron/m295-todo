@@ -118,7 +118,7 @@ router.get('/:id', async (req, res) => {
   return res.set('Content-Type', 'application/json').status(200).send(foundTask); // or just .status(200).json(...)
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const sessionEmail = req.session?.email;
 
   const { name } = req.body;
@@ -136,7 +136,7 @@ router.post('/', (req, res) => {
   return res.sendStatus(201);
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   const sessionEmail = req.session?.email;
 
   const {
@@ -161,7 +161,7 @@ router.put('/:id', (req, res) => {
   return res.status(200).json({ newTask });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const sessionEmail = req.session?.email;
 
   const taskId = parseInt(req.params.id, 10);

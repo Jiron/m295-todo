@@ -1,4 +1,5 @@
 const express = require('express');
+const url = require('url');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const swaggerUi = require('swagger-ui-express');
@@ -13,6 +14,14 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 
+app.use(async (req, res, next) => {
+  const parsedUrl = url.parse(req.url, true);
+  res.addListener('close', () => {
+    console.log(`User made a ${req.method} request to ${parsedUrl.pathname} at ${new Date()}. The server responded with the status code: ${res.statusCode}`);
+  });
+  next();
+});
+
 app.use('/', require('./endpoints/loginController'));
 app.use('/tasks', require('./endpoints/tasksController'));
 
@@ -26,7 +35,7 @@ app.use(session({
   cookie: {},
 }));
 
-app.use((req, res) => {
+app.use(async (req, res) => {
   res.sendStatus(404);
 });
 
