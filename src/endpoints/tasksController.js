@@ -1,6 +1,16 @@
+// You usually use underscores in json so this is why I removed the eslint check
+/* eslint-disable camelcase */
 const express = require('express');
+const session = require('express-session');
 
 const router = express.Router();
+
+router.use(session({
+  secret: 'supersecret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {},
+}));
 
 const tasks = [
   {
@@ -85,34 +95,104 @@ const tasks = [
   },
 ];
 
+function isValidTask(body) {
+  const {
+    name, date_created, done, tags,
+  } = body;
+  return (
+    (typeof name !== 'string')
+    || (typeof date_created !== 'string')
+    || (typeof done !== 'boolean')
+    || (typeof tags !== 'object')
+  );
+}
+
+router.use(async (req, res, next) => {
+  if (!req.session?.email) return res.status(401).json({ error: 'Unauthorized' });
+  return next();
+});
+
 router.get('/', async (req, res) => {
-  const email = req.session?.email;
+  const sessionEmail = req.session?.email;
 
-  if (email) {
-    return res.status(200).send(tasks.filter((task) => task.email === email));
+  if (!sessionEmail) return res.status(401).json({ error: 'Unauthorized' });
+
+  return res.set('Content-Type', 'application/json').status(200).send(tasks.filter((task) => task.email === sessionEmail));
+});
+
+router.get('/:id', async (req, res) => {
+  const sessionEmail = req.session?.email;
+  const id = parseInt(req.params.id, 10);
+
+  const foundTask = tasks.find((t) => t.email === sessionEmail && t.id === id);
+
+  if (!foundTask) return res.status(404).json({ error: 'Task not found' });
+
+  return res.set('Content-Type', 'application/json').status(200).send(foundTask); // or just .status(200).json(...)
+});
+
+router.post('/', (req, res) => {
+  const sessionEmail = req.session?.email;
+
+  const {
+    name, date_created, done, tags,
+  } = req.body;
+  if (isValidTask(req.body)) {
+    return res.status(422).json({ error: 'Missing or wrong body parameters' });
   }
+  const lastTaskId = parseInt(tasks[tasks.length - 1].id, 10);
+  const newTask = {
+    id: lastTaskId ? lastTaskId + 1 : 1,
+    name,
+    date_created,
+    done,
+    tags,
+    email: sessionEmail,
+  };
+  tasks.push(newTask);
 
-  return res.sendStatus(401);
-});
-
-router.get('/:id', (req, res) => {
-
-});
-
-router.post('/', async (req, res) => {
-
+  return res.sendStatus(201);
 });
 
 router.put('/:id', (req, res) => {
+  const sessionEmail = req.session?.email;
 
-});
+  const {
+    name, date_created, done, tags,
+  } = req.body;
+  const taskId = parseInt(req.params.id, 10);
+  const taskIndex = tasks.findIndex((t) => t.id === taskId);
 
-router.patch('/:id', (req, res) => {
+  const foundTask = tasks[taskIndex];
+  if (!foundTask) return res.status(404).json({ error: 'Task not found' });
+  if (foundTask.email !== sessionEmail) return res.status(403).json({ error: 'Cannot change a task you do not own' });
+  if (!isValidTask(req.body)) return res.status(422).json({ error: 'Missing or wrong body parameters' });
+  const newTask = {
+    id: foundTask.id,
+    name,
+    date_created,
+    done,
+    tags,
+    email: foundTask.email,
+  };
+  tasks[taskIndex] = newTask;
 
+  return res.sendStatus(200);
 });
 
 router.delete('/:id', (req, res) => {
+  const sessionEmail = req.session?.email;
 
+  const taskId = parseInt(req.params.id, 10);
+  const taskIndex = tasks.findIndex((t) => t.id === taskId);
+  const foundTask = tasks[taskIndex];
+
+  if (!foundTask) return res.status(404).json({ error: 'Task not found' });
+  if (foundTask.email !== sessionEmail) return res.status(403).json({ error: 'Cannot delete a task you do not own' });
+
+  tasks.splice(taskIndex, 1);
+
+  return res.sendStatus(200);
 });
 
 module.exports = router;
