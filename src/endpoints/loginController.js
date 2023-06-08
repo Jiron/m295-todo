@@ -1,3 +1,5 @@
+// You usually use underscores in json so this is why I removed the eslint check
+/* eslint-disable camelcase */
 const express = require('express');
 const session = require('express-session');
 
@@ -42,10 +44,10 @@ router.get('/verify', async (req, res) => {
   const { email } = req.session;
 
   if (email) {
-    return res.status(200).json({ email });
+    return res.status(200).json({ email, logged_in: true });
   }
 
-  return res.status(401);
+  return res.status(401).json({ email: null, logged_in: false });
 });
 
 router.delete('/logout', async (req, res) => {
