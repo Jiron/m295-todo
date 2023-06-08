@@ -13,6 +13,7 @@ info:
 tags:
   - name: todo
   - name: tasks
+  - name: login
 
 paths:
   '/tasks':
@@ -148,8 +149,14 @@ paths:
       parameters:
         - $ref: '#/components/parameters/id'
       responses:
-        '204':
+        '200':
           description: No Content
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/task'
         '403':
           description: Unauthorized
           content:
@@ -168,6 +175,82 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/404TaskNotFound'
+
+  '/login':
+    post: 
+      tags:
+        - auth
+      summary: Login to an account
+      requestBody:
+        content:
+          application/json:
+            schema:
+                properties:
+                  email:
+                    type: string
+                    example: "test@test.com"
+                  password:
+                    type: string
+                    example: "12345"
+      responses:  
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                  properties:
+                    email:
+                      type: string
+                      example: "test@test.com"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                  properties:
+                    error:
+                      type: string
+                      example: "Invalid credentials"
+
+  '/verify':
+    get: 
+      tags:
+        - auth
+      summary: Veriy if account is authorized
+      responses:  
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                  properties:
+                    email:
+                      type: string
+                      example: "test@test.com"
+                    logged_in:
+                      type: boolean
+                      example: true
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                  properties:
+                    email:
+                      type: string
+                      example: "test@test.com"
+                    logged_in:
+                      type: boolean
+                      example: false
+
+  '/logout':
+    delete: 
+      tags:
+        - auth
+      summary: Log out of account
+      responses:  
+        '204':
+          description: No Content
           
   
 components:

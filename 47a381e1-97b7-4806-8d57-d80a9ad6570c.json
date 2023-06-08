@@ -1,0 +1,515 @@
+[
+  {
+    "v": 1,
+    "name": "m295-todo",
+    "folders": [
+      {
+        "v": 1,
+        "name": "Authentication",
+        "folders": [
+          {
+            "v": 1,
+            "name": "Success (exec. step by step)",
+            "folders": [],
+            "requests": [
+              {
+                "name": "Successful POST Login",
+                "endpoint": "http://localhost:3000/login",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "application/json",
+                  "body": "{\r\n    \"email\": \"john.doegmail.com\",\r\n    \"password\": \"m295\"\r\n}"
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Successful GET Verify",
+                "endpoint": "http://localhost:3000/verify",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Successful DELETE Logout",
+                "endpoint": "http://localhost:3000/logout",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "text/plain",
+                  "body": ""
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              }
+            ]
+          },
+          {
+            "v": 1,
+            "name": "Fail (exec. step by step)",
+            "folders": [],
+            "requests": [
+              {
+                "name": "Failed POST Login because of wrong credentials",
+                "endpoint": "http://localhost:3000/login",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "application/json",
+                  "body": "{\r\n    \"email\": \"wrong@email.com\",\r\n    \"password\": \"wrongpass\"\r\n}"
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed POST Login because of missing credentials",
+                "endpoint": "http://localhost:3000/login",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "application/json",
+                  "body": "{\r\n    \"email\": \"wrong@email.com\",\r\n    \"password\": \"wrongpass\"\r\n}"
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed GET Verify if not logged in",
+                "endpoint": "http://localhost:3000/verify",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed DELETE Logout if not logged in",
+                "endpoint": "http://localhost:3000/logout",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              }
+            ]
+          }
+        ],
+        "requests": []
+      },
+      {
+        "v": 1,
+        "name": "Tasks",
+        "folders": [
+          {
+            "v": 1,
+            "name": "Success (must be logged in through 'Successful Login')",
+            "folders": [],
+            "requests": [
+              {
+                "name": "Successful GET Tasks",
+                "endpoint": "http://localhost:3000/tasks",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Successful GET Tasks by ID 2",
+                "endpoint": "http://localhost:3000/tasks/2",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Successful POST new Task",
+                "endpoint": "http://localhost:3000/tasks",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "application/json",
+                  "body": "{\r\n    \"name\": \"Spazieren gehen\"\r\n}"
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Successful UPDATE Task with ID 2",
+                "endpoint": "http://localhost:3000/tasks/2",
+                "method": "PUT",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "application/json",
+                  "body": "{\r\n    \"name\": \"Laufen\",\r\n    \"created_at\": \"2023-06-07T00:00:00.000Z\",\r\n    \"completed_at\": \"2023-06-07T00:00:00.000Z\"\r\n}"
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Successful DELETE Task with ID 2",
+                "endpoint": "http://localhost:3000/tasks/2",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "text/plain",
+                  "body": ""
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              }
+            ]
+          },
+          {
+            "v": 1,
+            "name": "Fail (must not be logged in)",
+            "folders": [],
+            "requests": [
+              {
+                "name": "Failed GET Tasks because not logged in",
+                "endpoint": "http://localhost:3000/tasks",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed POST Tasks because not logged in",
+                "endpoint": "http://localhost:3000/tasks",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "application/json",
+                  "body": "{\r\n    \"name\": \"Spazieren gehen\"\r\n}"
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed UPDATE Tasks because not logged in",
+                "endpoint": "http://localhost:3000/tasks/2",
+                "method": "PUT",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "application/json",
+                  "body": "{\r\n    \"name\": \"Laufen\",\r\n    \"created_at\": \"2023-06-07T00:00:00.000Z\",\r\n    \"completed_at\": \"2023-06-07T00:00:00.000Z\"\r\n}"
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed DELETE Tasks because not logged in",
+                "endpoint": "http://localhost:3000/tasks/2",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              }
+            ]
+          },
+          {
+            "v": 1,
+            "name": "Fail (must be logged in through 'Sucessful Login')",
+            "folders": [],
+            "requests": [
+              {
+                "name": "Failed GET Tasks because ID not found",
+                "endpoint": "http://localhost:3000/tasks/1234",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed POST Tasks because no name property",
+                "endpoint": "http://localhost:3000/tasks",
+                "method": "POST",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "application/json",
+                  "body": "{\r\n    \r\n}"
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed UPDATE Tasks because of missing property (completed_at)",
+                "endpoint": "http://localhost:3000/tasks/2",
+                "method": "PUT",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "application/json",
+                  "body": "{\r\n    \"name\": \"Laufen\",\r\n    \"created_at\": \"2023-06-07T00:00:00.000Z\"\r\n}"
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed UPDATE Tasks because of wrong property type (completed_at)",
+                "endpoint": "http://localhost:3000/tasks/2",
+                "method": "PUT",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "application/json",
+                  "body": "{\r\n    \"name\": \"Laufen\",\r\n    \"created_at\": \"2023-06-07T00:00:00.000Z\",\r\n    \"completed_at\": 123\r\n}"
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed UPDATE Tasks because user didnt create task",
+                "endpoint": "http://localhost:3000/tasks/3",
+                "method": "PUT",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": "application/json",
+                  "body": "{\r\n    \"name\": \"Laufen\",\r\n    \"created_at\": \"2023-06-07T00:00:00.000Z\",\r\n    \"completed_at\": \"2023-06-07T00:00:00.000Z\"\r\n}"
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed DELETE Tasks because not logged in",
+                "endpoint": "http://localhost:3000/tasks/2",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed DELETE Tasks because user didnt create task",
+                "endpoint": "http://localhost:3000/tasks/3",
+                "method": "DELETE",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              }
+            ]
+          },
+          {
+            "v": 1,
+            "name": "Failed (general)",
+            "folders": [],
+            "requests": [
+              {
+                "name": "Failed GET because endpoint does not exist",
+                "endpoint": "http://localhost:3000/nonexistant",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              },
+              {
+                "name": "Failed PATCH because endpoint does not exist",
+                "endpoint": "http://localhost:3000/nonexistant",
+                "method": "PATCH",
+                "headers": [],
+                "params": [],
+                "auth": {
+                  "authType": "none",
+                  "authActive": true
+                },
+                "body": {
+                  "contentType": null,
+                  "body": null
+                },
+                "preRequestScript": "",
+                "testScript": "",
+                "v": "1"
+              }
+            ]
+          }
+        ],
+        "requests": []
+      }
+    ],
+    "requests": []
+  }
+]

@@ -1,0 +1,77 @@
+commit 34a163b0c57bfce95da0d3dfab61d0463e07197e
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 13:56:39 2023 +0000
+
+    feat: logging
+
+commit bfe50b821f78e1f7ef0f9003ec45d5995432869f
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 15:41:16 2023 +0200
+
+    fix: adjusted error code in code and swagger documentation accordingly
+
+commit 7ea1944d05c929dde7a0e8ba0447a3ccfecf41d6
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 13:11:59 2023 +0000
+
+    feat: swagger doc done
+
+commit 00e59954ca4211070a55d92a7acd74c204d4bf62
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 14:42:27 2023 +0200
+
+    feat: new readme
+
+commit 2f708dd75055c306c12b179dc9dac5f34bd972eb
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 14:42:12 2023 +0200
+
+    fix: allow all possible emails to log in and out
+
+commit 7af7b34bd53bcb86a0d167d285b63a08bc35d6a4
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 14:07:11 2023 +0200
+
+    feat: logged_in boolean for auth verify endpoint
+
+commit 4659275d7af3881b843f9749c4903c3f6cb58723
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 14:06:01 2023 +0200
+
+    fix: adjusted error messages and status codes as per task
+
+commit 507024f871a1db89ad7d90e5726f73fc74329ed4
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 13:41:12 2023 +0200
+
+    feat: added new account since it was missing
+
+commit 0b6fc9bb894671a93241832bf78cb5b7856d9da2
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 13:41:01 2023 +0200
+
+    fix: wrong validation in isValidTask and wrong error codes
+
+commit e8791378249603032dea2579c65d3834abe3e568
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 10:51:03 2023 +0000
+
+    feat: edited property names and added completed_at
+
+commit b254b27008c308466a06a9827c53435010797951
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 09:47:50 2023 +0000
+
+    feat: added all endpoints for tasks and login with error handling and more
+
+commit 49be5518d5010eeec9d216ce42aaefac04237942
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 07:59:11 2023 +0000
+
+    feat: setup project & index & added fake data & working on tasks
+
+commit 942d3961d30fcce157d32c22717d2b510350aac1
+Author: Jiron <59139789+Jiron@users.noreply.github.com>
+Date:   Thu Jun 8 08:24:08 2023 +0200
+
+    Initial commit
