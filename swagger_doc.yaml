@@ -34,7 +34,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error403'
+                $ref: '#/components/schemas/403Unauthorized'
 
     post: 
       tags:
@@ -57,7 +57,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error403'
+                $ref: '#/components/schemas/403Unauthorized'
         '406':
           description: Not Acceptable
           content:
@@ -87,13 +87,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error403'
+                $ref: '#/components/schemas/403Unauthorized'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error404'
+                $ref: '#/components/schemas/404TaskNotFound'
 
     put:
       tags: 
@@ -118,13 +118,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error403'
+                $ref: '#/components/schemas/403Unauthorized'
+        '403 (No permission)':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/403CannotChangeTask'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error404'
+                $ref: '#/components/schemas/404TaskNotFound'
         '406':
           description: Not Acceptable
           content:
@@ -144,12 +150,24 @@ paths:
       responses:
         '204':
           description: No Content
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/403CannotChangeTask'
+        '403 (No permission)':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/403CannotChangeTask'
         '404':
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/error404'
+                $ref: '#/components/schemas/404TaskNotFound'
           
   
 components:
@@ -183,7 +201,7 @@ components:
           type: string
           example: "jane.smith@gmail.com"
 
-    error403:
+    403Unauthorized:
       description: Thrown when unauthorized
       type: object
       properties:
@@ -191,7 +209,15 @@ components:
           type: string
           example: "Unauthorized"
 
-    error404:
+    403CannotChangeTask:
+      description: Thrown when trying to change a task the user does not have power over
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Cannot change a task you do not own"
+
+    404TaskNotFound:
       description: Thrown when task not found
       type: object
       properties:

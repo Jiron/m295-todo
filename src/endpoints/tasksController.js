@@ -169,7 +169,7 @@ router.delete('/:id', (req, res) => {
   const foundTask = tasks[taskIndex];
 
   if (!foundTask) return res.status(404).json({ error: 'Task not found' });
-  if (foundTask.email !== sessionEmail) return res.status(403).json({ error: 'Cannot delete a task you do not own' });
+  if (foundTask.email !== sessionEmail) return res.status(403).json({ error: 'Cannot change a task you do not own' });
 
   tasks.splice(taskIndex, 1);
 
