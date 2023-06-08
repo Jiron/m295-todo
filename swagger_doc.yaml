@@ -2,24 +2,24 @@ openapi: 3.0.3
 servers:
   - url: http://localhost:3000
 info:
-  title: Module 295 Book Library API System
+  title: Module 295 ToDo API System
   description: |
-    A service which stores all required data for books, customers and what those customers have lend.
+    A service which stores tasks for users, as well as include a login system for them so they can have their individual workspaces. 
   contact:
     name: Manassés Zähnler
     email: manasses.zaehnler@outlook.com
   version: 1.0.0
 
 tags:
-  - name: books
-  - name: lends
+  - name: todo
+  - name: tasks
 
 paths:
-  '/books':
+  '/tasks':
     get:
       tags:
-        - books
-      summary: Read all books
+        - tasks
+      summary: Read all tasks
       responses:
         '200':
           description: OK
@@ -28,263 +28,173 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/book'
-        '500':
-          description: Internal Server Error
+                  $ref: '#/components/schemas/task'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error403'
 
     post: 
       tags:
-        - books
-      summary: Create a new book
+        - tasks
+      summary: Create a new task
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/book'
+              $ref: '#/components/schemas/task'
       responses:  
         '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/book' 
-        '400':
-          description: Bad Request
-        '422':
-          description: Unprocessable Content
-        '500':
-          description: Internal Server Error
+                $ref: '#/components/schemas/task'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                    example: "Missing name property"
     
-  '/books/{isbn}':
+  '/tasks/{id}':
     get:
       tags:
-        - books
-      summary: Read a single book by its isbn
+        - tasks
+      summary: Read a single task by its id
       parameters:
-        - $ref: '#/components/parameters/isbn'
+        - $ref: '#/components/parameters/id'
       responses:
         '200':
           description: OK
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/book'
-        '404':
-          description: Not Found
-        '500':
-          description: Internal Server Error
-
-    patch:
-      tags: 
-        - books
-      summary: Update a book by its isbn
-      parameters: 
-        - $ref: '#/components/parameters/isbn'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/book'
-      responses:
-        '200':
-          description: OK
+                $ref: '#/components/schemas/task'
+        '403':
+          description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/book'
+                $ref: '#/components/schemas/error403'
         '404':
           description: Not Found
-        '422':
-          description: Unprocessable Content
-        '500':
-          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error404'
 
     put:
       tags: 
-        - books
-      summary: Update a book by its isbn
+        - tasks
+      summary: Update a task by its id
       parameters: 
-        - $ref: '#/components/parameters/isbn'
+        - $ref: '#/components/parameters/id'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/book'
+              $ref: '#/components/schemas/task'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/book'
-        '400':
-          description: Bad Request
+                $ref: '#/components/schemas/task'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error403'
         '404':
           description: Not Found
-        '422':
-          description: Unprocessable Content
-        '500':
-          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error404'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                    example: "Missing or wrong body properties"
 
     delete:
       tags: 
-        - books
-      summary: Delete a book by its isbn
+        - tasks
+      summary: Delete a task by its id
       parameters:
-        - $ref: '#/components/parameters/isbn'
+        - $ref: '#/components/parameters/id'
       responses:
         '204':
           description: No Content
         '404':
           description: Not Found
-        '500':
-          description: Internal Server Error
-          
-  '/lends':
-    get:
-      tags:
-        - lends
-      summary: Read all lends
-      responses:
-        '200':
-          description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/lend'
-        '500':
-          description: Internal server error
-
-  '/lends/{id}':
-    get:
-      tags:
-        - lends
-      summary: Read a single lend by its id
-      parameters:
-        - $ref: '#/components/parameters/id'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/lend'
-        '404': 
-          description: Not Found
-        '500':
-          description: Internal Server Error
-    
-    post:
-      tags:
-        - lends
-      summary: Create a new lend
-      parameters:
-        - $ref: '#/components/parameters/id'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/lend'
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/lend'
-        '400':
-          description: Bad Request 
-        '422': 
-          description: Unprocessable Content
-        '500':
-          description: Internal Server Error          
-
-    patch:
-      tags:
-        - lends
-      summary: Update a single lend by its id.
-      parameters:
-        - $ref: '#/components/parameters/id'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/lend'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/lend'
-        '400':
-          description: Bad Request
-        '404':
-          description: Not Found
-        '500':
-          description: Internal Server Error
+                $ref: '#/components/schemas/error404'
           
   
 components:
-  parameters:
-    isbn:
-      name: isbn
-      in: path
-      required: true
-      description: The isbn of a book
-      schema:
-        type: string
-    
+  parameters:    
     id:
       name: id
       in: path
       required: true
-      description: The id of a lend
+      description: The id of a task
       schema:
-        type: string
+        type: integer
 
   schemas:
-    book:
-      description: A book entry
-      type: object
-      properties:
-        isbn:
-          type: string
-          example: "9780743273565"
-        title: 
-          type: string
-          example: "The Great Gatsby"
-        year:
-          type: integer
-          example: 1925
-        author:
-          type: string 
-          example: "F. Scott Fitzgerald" 
-    
-    lend:
-      description: A lend entry
+    task:
+      description: A task entry
       type: object
       properties:
         id:
-          type: string
-          example: "9ddf01d0-57df-4707-9879-fb7364dad07b"
-        customer_id:
           type: integer
-          format: int64
-          example: 1433 
-        isbn:
+          example: 21
+        name: 
           type: string
-          example: "9780743273565"
-        borrowed_at:
+          example: "Do joga"
+        created_at:
+          type: date
+          example: "2023-06-08T00:00:00.000Z"
+        completed_at:
+          type: date 
+          example: "2023-06-10T00:00:00.000Z"
+        email:
           type: string
-          format: date-time
-          example: "2023-06-01T13:16:58.261Z"
-        returned_at:
-          type: string
-          format: date-time
-          example: "2023-06-05T12:35:52.261Z"
-        
+          example: "jane.smith@gmail.com"
 
-    
+    error403:
+      description: Thrown when unauthorized
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unauthorized"
+
+    error404:
+      description: Thrown when task not found
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Task not found"
