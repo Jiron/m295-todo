@@ -25,14 +25,14 @@ router.post('/login', async (req, res) => {
   const entry = logins.find((x) => email?.toLowerCase() === x.email && password === x.password);
 
   // Check the credentials against store
-  if (entry && !req.session?.email) {
+  if (entry) {
     // Link email to session
     req.session.email = entry.email;
 
     return res.status(200).json({ email });
   }
 
-  return res.status(403).json({ error: 'Invalid credentials' });
+  return res.status(401).json({ error: 'Invalid credentials' });
 });
 
 router.get('/verify', async (req, res) => {
@@ -42,17 +42,12 @@ router.get('/verify', async (req, res) => {
     return res.status(200).json({ email });
   }
 
-  return res.status(401).json({ error: 'Not logged in' });
+  return res.status(401);
 });
 
 router.delete('/logout', async (req, res) => {
-  if (req.session.email) {
-    req.session.email = null;
-  } else {
-    return res.status(401).json({ error: 'Not logged in' });
-  }
-
-  return res.sendStatus(200);
+  req.session.email = null;
+  return res.sendStatus(204);
 });
 
 module.exports = router;

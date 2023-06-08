@@ -91,8 +91,8 @@ function isValidTask(task) {
   } = task;
   return (
     typeof name === 'string'
-    || typeof created_at === 'string'
-    || (completed_at == null || typeof completed_at === 'string')
+    && (created_at == null || typeof created_at === 'string')
+    && (completed_at == null || typeof completed_at === 'string')
   );
 }
 
@@ -103,8 +103,6 @@ router.use(async (req, res, next) => {
 
 router.get('/', async (req, res) => {
   const sessionEmail = req.session?.email;
-
-  if (!sessionEmail) return res.status(401).json({ error: 'Unauthorized' });
 
   return res.set('Content-Type', 'application/json').status(200).send(tasks.filter((task) => task.email === sessionEmail));
 });
@@ -124,7 +122,7 @@ router.post('/', (req, res) => {
   const sessionEmail = req.session?.email;
 
   const { name } = req.body;
-  if (!isValidTask(req.body)) return res.status(422).json({ error: 'Missing or wrong body parameters' });
+  if (!name) return res.status(422).json({ error: 'Missing name property' });
   const lastTaskId = parseInt(tasks[tasks.length - 1].id, 10);
   const newTask = {
     id: lastTaskId ? lastTaskId + 1 : 1,
@@ -150,7 +148,7 @@ router.put('/:id', (req, res) => {
   const foundTask = tasks[taskIndex];
   if (!foundTask) return res.status(404).json({ error: 'Task not found' });
   if (foundTask.email !== sessionEmail) return res.status(403).json({ error: 'Cannot change a task you do not own' });
-  if (!isValidTask(req.body)) return res.status(422).json({ error: 'Missing or wrong body parameters' });
+  if (!isValidTask(req.body)) return res.status(422).json({ error: 'Missing or wrong body properties' });
   const newTask = {
     id: foundTask.id,
     name,
