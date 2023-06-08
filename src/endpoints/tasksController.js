@@ -97,7 +97,7 @@ function isValidTask(task) {
 }
 
 router.use(async (req, res, next) => {
-  if (!req.session?.email) return res.status(401).json({ error: 'Unauthorized' });
+  if (!req.session?.email) return res.status(403).json({ error: 'Unauthorized' }); // 401 would fit more, but not written like that in task
   return next();
 });
 
@@ -122,7 +122,7 @@ router.post('/', (req, res) => {
   const sessionEmail = req.session?.email;
 
   const { name } = req.body;
-  if (!name) return res.status(422).json({ error: 'Missing name property' });
+  if (!name) return res.status(406).json({ error: 'Missing name property' });
   const lastTaskId = parseInt(tasks[tasks.length - 1].id, 10);
   const newTask = {
     id: lastTaskId ? lastTaskId + 1 : 1,
@@ -148,7 +148,7 @@ router.put('/:id', (req, res) => {
   const foundTask = tasks[taskIndex];
   if (!foundTask) return res.status(404).json({ error: 'Task not found' });
   if (foundTask.email !== sessionEmail) return res.status(403).json({ error: 'Cannot change a task you do not own' });
-  if (!isValidTask(req.body)) return res.status(422).json({ error: 'Missing or wrong body properties' });
+  if (!isValidTask(req.body)) return res.status(406).json({ error: 'Missing or wrong body properties' });
   const newTask = {
     id: foundTask.id,
     name,
@@ -158,7 +158,7 @@ router.put('/:id', (req, res) => {
   };
   tasks[taskIndex] = newTask;
 
-  return res.sendStatus(200);
+  return res.status(200).json({ newTask });
 });
 
 router.delete('/:id', (req, res) => {
